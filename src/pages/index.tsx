@@ -1,7 +1,12 @@
 import { useState, useEffect, ChangeEvent, useRef } from "react";
+
+import { Spinner } from "flowbite-react";
+
 import Image from "next/image";
 import { Inter } from "next/font/google";
+
 import { getZipcode } from "@uptc/services/zipcode/zipcode";
+import Footer from "@uptc/components/Footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,12 +51,13 @@ export default function Home() {
   console.log(search);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-12 gap-4">
-      <div>
-        <h1 className="text-4xl font-bold text-center mb-4">
-          Buscador de Códigos Postales
-        </h1>
-      </div>
+    <main className="flex min-h-screen flex-col items-center justify-start p-12 gap-2">
+      <h1 className="text-4xl font-bold text-center mb-4">
+        Buscador de Códigos Postales
+      </h1>
+      <p className="text-lg text-center mb-4">
+        Busca un código postal y te mostraremos la información de la zona
+      </p>
       <div className="mb-12 flex flex-row gap-3 items-center w-[400px]">
         <input
           type="text"
@@ -65,6 +71,19 @@ export default function Home() {
           Buscar
         </button>
       </div>
+      <div className="flex flex-col gap-4 items-center justify-center w-full">
+        {loading ? (
+          <Spinner aria-label="Extra large spinner example" size="xl" />
+        ) : (
+          <div className="flex flex-col gap-4 items-center justify-center w-full">
+            <p className="text-lg text-center mb-4">
+              {response.data ? response.data : "No hay resultados"}
+            </p>
+          </div>
+        )}
+      </div>
+
+      <Footer />
     </main>
   );
 }
