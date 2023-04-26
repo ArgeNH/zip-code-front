@@ -7,6 +7,7 @@ import { Inter } from "next/font/google";
 
 import { getZipcode } from "@uptc/services/zipcode/zipcode";
 import Footer from "@uptc/components/Footer/Footer";
+import CardZipCodes from "@uptc/components/CardZipCodes/CardZipCodes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +21,8 @@ export default function Home() {
   const [filter, setFilter] = useState<{
     zipCode: string;
   }>(filterParam);
-  const [response, setResponse] = useState<{ data: string }>({
-    data: "",
+  const [response, setResponse] = useState<{ data: [] }>({
+    data: [],
   });
   const timeRef = useRef<any>();
 
@@ -48,8 +49,6 @@ export default function Home() {
     fetchData();
   }, [filter]);
 
-  console.log(search);
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-12 gap-2">
       <h1 className="text-4xl font-bold text-center mb-4">
@@ -71,14 +70,18 @@ export default function Home() {
           Buscar
         </button>
       </div>
-      <div className="flex flex-col gap-4 items-center justify-center w-full">
+      <div className="flex flex-col gap-4 items-center justify-center w-[720px]">
         {loading ? (
           <Spinner aria-label="Extra large spinner example" size="xl" />
         ) : (
-          <div className="flex flex-col gap-4 items-center justify-center w-full">
-            <p className="text-lg text-center mb-4">
-              {response.data ? response.data : "No hay resultados"}
-            </p>
+          <div className="flex flex-col gap-4 items-center justify-center w-[920px]">
+            {response.data ? (
+              <div className="grid grid-cols-4 gap-4">
+                <CardZipCodes zipcodes={response?.data} />
+              </div>
+            ) : (
+              <p className="text-lg text-center mb-4">No hay resultados</p>
+            )}
           </div>
         )}
       </div>
