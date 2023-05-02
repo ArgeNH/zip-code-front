@@ -43,7 +43,7 @@ export default function Home() {
       setLoading(true);
       const data = await getZipcode(filter.zipCode);
       console.log(data);
-      setResponse({ data: data.zipcode });
+      setResponse({ data: data?.zipcode });
       setLoading(false);
     };
     fetchData();
@@ -65,6 +65,7 @@ export default function Home() {
           onChange={handleChange}
           className="rounded-lg border w-full border-gray-300 p-3 text-md text-black w focus:outline-none focus:border-blue-500"
           placeholder="Search a zip code"
+          onKeyUp={(e) => search.toUpperCase()}
         />
         <button className="rounded-lg bg-blue-500 p-3 text-white hover:bg-blue-700">
           Buscar
