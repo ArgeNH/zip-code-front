@@ -9,7 +9,7 @@ const Map: FC<PropsMap> = ({ latitude, longitude }) => {
   return (
     <>
       <iframe
-        src={`https://embed.waze.com/iframe?zoom=16&lat=${latitude}&lon=${longitude}&pin=1`}
+        src={`https://embed.waze.com/iframe?zoom=15&lat=${latitude}&lon=${longitude}&pin=1`}
         width="100%"
         height="820"
       ></iframe>
