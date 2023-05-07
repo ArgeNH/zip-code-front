@@ -2,14 +2,11 @@ import { useState, useEffect, ChangeEvent, useRef } from "react";
 
 import { Spinner } from "flowbite-react";
 
-import Image from "next/image";
-import { Inter } from "next/font/google";
-
-import { getZipcode } from "@uptc/services/zipcode/zipcode";
 import Footer from "@uptc/components/Footer/Footer";
 import CardZipCodes from "@uptc/components/CardZipCodes/CardZipCodes";
-
-const inter = Inter({ subsets: ["latin"] });
+import { getZipcode } from "@uptc/services/zipcode/zipcode";
+import { Flags as FlagType, ResponseZipCode, Zipcode } from "@uptc/types/types";
+import Flags from "@uptc/components/Flags";
 
 const filterParam = {
   zipCode: "",
@@ -21,9 +18,10 @@ export default function Home() {
   const [filter, setFilter] = useState<{
     zipCode: string;
   }>(filterParam);
-  const [response, setResponse] = useState<{ data: [] }>({
+  const [response, setResponse] = useState<{ data: Zipcode[] }>({
     data: [],
   });
+  const [countries, setCountries] = useState<FlagType[]>([]);
   const timeRef = useRef<any>();
 
   const handleChange = (e: ChangeEvent) => {
@@ -38,15 +36,30 @@ export default function Home() {
     }, 500);
   };
 
+  const fetchData = async () => {
+    setLoading(true);
+    const data: ResponseZipCode = await getZipcode(filter.zipCode);
+    console.log(data);
+    setResponse({ data: data?.zipcode });
+
+    const mapString: FlagType[] = data?.zipcode?.map((zip) => ({
+      code: zip.country_code,
+      name: zip.country_name,
+    }));
+
+    const flagMap = new Map<string, FlagType>();
+    mapString?.forEach((flag) => {
+      flagMap.set(flag.code, flag);
+    });
+    const uniqueMap = Array.from(flagMap.values());
+
+    setCountries(uniqueMap);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const data = await getZipcode(filter.zipCode);
-      console.log(data);
-      setResponse({ data: data?.zipcode });
-      setLoading(false);
-    };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   return (
@@ -57,7 +70,7 @@ export default function Home() {
       <p className="text-lg text-center mb-4">
         Busca un código postal y te mostraremos la información de la zona
       </p>
-      <div className="mb-12 flex flex-row gap-3 items-center w-[400px]">
+      <div className="mb-2 flex flex-row gap-3 items-center w-[400px]">
         <input
           type="text"
           name="zipCode"
@@ -76,6 +89,7 @@ export default function Home() {
           <Spinner aria-label="Extra large spinner example" size="xl" />
         ) : (
           <div className="flex flex-col gap-4 items-center justify-center w-[920px]">
+            <Flags countries={countries} />
             {response?.data && response?.data?.length !== 0 ? (
               <div className="grid grid-cols-4 gap-4">
                 <CardZipCodes zipcodes={response?.data} />

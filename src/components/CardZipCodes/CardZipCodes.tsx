@@ -1,16 +1,17 @@
 import { FC } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+
 import { Card } from "flowbite-react";
 
+import { Zipcode } from "@uptc/types/types";
+
 interface PropsCardZipCodes {
-  // TODO
-  zipcodes: any[] | null;
+  zipcodes: Zipcode[];
 }
 
 const CardZipCodes: FC<PropsCardZipCodes> = ({ zipcodes }) => {
-  console.log(zipcodes);
-
   return (
     <>
       {zipcodes?.map((zipcode) => (
@@ -23,7 +24,7 @@ const CardZipCodes: FC<PropsCardZipCodes> = ({ zipcodes }) => {
               <Image
                 className="mb-3 h-24 w-24"
                 src={`https://flagsapi.com/${zipcode.country_code}/shiny/64.png`}
-                alt="Bonnie image"
+                alt={zipcode?.country_name ?? "City Flag"}
                 width={144}
                 height={108}
               />
