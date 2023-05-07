@@ -76,7 +76,7 @@ export default function Home() {
           <Spinner aria-label="Extra large spinner example" size="xl" />
         ) : (
           <div className="flex flex-col gap-4 items-center justify-center w-[920px]">
-            {response.data ? (
+            {response?.data && response?.data?.length !== 0 ? (
               <div className="grid grid-cols-4 gap-4">
                 <CardZipCodes zipcodes={response?.data} />
               </div>
