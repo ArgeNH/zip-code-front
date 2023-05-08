@@ -4,6 +4,7 @@ export interface ResponseZipCode {
   valid: boolean;
   zipcode: Zipcode[];
   code: code;
+  detail?: string;
 }
 
 export interface Zipcode {
@@ -39,4 +40,11 @@ export interface Data {
 export interface Flags {
   code: string;
   name: string;
+}
+
+export interface CustomAlertType {
+  show: boolean;
+  message: string;
+  title: string;
+  type: "success" | "failure" | "warning" | "info" | undefined;
 }
