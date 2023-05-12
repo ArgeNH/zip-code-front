@@ -16,7 +16,7 @@ const Files = () => {
     setLoading(true);
     if (e.target!.files) {
       const file = e.target.files[0];
-      console.log(file);
+
       setFile(file);
 
       if (file.type !== "text/csv") {
@@ -26,7 +26,7 @@ const Files = () => {
       }
 
       const data = await getZipcodeByFile(file);
-      console.log(data);
+
       setResponse({ data: data?.zipcode });
     }
     setLoading(false);

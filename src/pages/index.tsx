@@ -53,7 +53,7 @@ export default function Home() {
   const fetchData = async () => {
     setLoading(true);
     const data: ResponseZipCode = await getZipcode(filter.zipCode);
-    console.log(data);
+
     setResponse({ data: data?.zipcode });
     setCustomAlert({
       show: data?.detail ? false : true,

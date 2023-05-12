@@ -11,7 +11,6 @@ interface PropsFlags {
 }
 
 const Flags: FC<PropsFlags> = ({ countries }) => {
-  console.log(countries);
   return (
     <>
       <p className="text-lg text-center">Banderas:</p>
